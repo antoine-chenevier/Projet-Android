@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     public  void Traduire(View view){
 
-
-
         EditText texte = (EditText) findViewById(R.id.editTextTraduire);
         Intent SendHistorique = new Intent();
         SendHistorique.putExtra("addHistorique",texte.getText().toString());

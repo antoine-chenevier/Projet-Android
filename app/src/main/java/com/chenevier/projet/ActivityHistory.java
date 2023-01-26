@@ -26,9 +26,13 @@ public class ActivityHistory extends AppCompatActivity implements AdapterView.On
         Intent i = getIntent();
         String values = i.getStringExtra("addHistorique");
 
-        historique = new String[]{"t","d"};
-        //historique[0] = "values.toString()";
+        historique = new String[]{"trois","quatre","bonjour"};
         /*
+        if(!values.isEmpty()){
+            historique = new String[]{values,"trois","quatre","bonjour"};
+        }
+        //historique[0] = "values.toString()";
+
         historique[0] = values;
         historique[1] = "trois";
         int taille = historique.length;

@@ -34,7 +34,8 @@ public class ParametresActivity extends AppCompatActivity {
                         try {
                             int character_count = response.getInt("character_count");
                             int character_limit = response.getInt("character_limit");
-                            String test = character_count + "/" + character_limit;
+                            float pourcentage =  (character_count/character_limit)*100;
+                            String test = character_count + "/" + character_limit + " Pourcentage: "+pourcentage;
                             character.setText(test);
 
                             /*

@@ -11,11 +11,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.text.DateFormatSymbols;
+import java.util.ArrayList;
 
 public class ActivityHistory extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     ListView listHistory;
-    String[] historique;
+    ArrayList<String> historique = new ArrayList<String>();;
 
 
     @Override
@@ -26,7 +27,7 @@ public class ActivityHistory extends AppCompatActivity implements AdapterView.On
         Intent i = getIntent();
         String values = i.getStringExtra("addHistorique");
 
-        historique = new String[]{"trois","quatre","bonjour"};
+        historique.add(0,values);
         /*
         if(!values.isEmpty()){
             historique = new String[]{values,"trois","quatre","bonjour"};

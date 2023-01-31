@@ -21,32 +21,41 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     String APIKey = "337206f1-6a79-5d3d-5eb2-ee1ba82d54f7:fx";
+    ArrayList<Langue> langue_list = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         AndroidNetworking.initialize(this);
-        /*
         AndroidNetworking.get("https://api-free.deepl.com/v2/languages")
                 .addHeaders("Authorization","DeepL-Auth-Key "+APIKey)
                 .build()
-                .getAsOkHttpResponse(new OkHttpResponseListener()
-                {
-
+                .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
-                    public void onResponse(Response response) {
-                        switch (response.code()) {
-                            case 200:
-                                Intent nextActivity = new Intent();
-                                startActivity(nextActivity);
-                                //ok
-                                break;
-                            default:
+                    public void onResponse(JSONArray response) {
+                        try {
+                            for(int i=0;i<response.length();i++) {
+                                JSONObject langue = response.getJSONObject(i);
+                                String language = langue.getString("language");
+                                String name = langue.getString("name");
+                                Langue langueAdd = new Langue(language,name);
+                                langue_list.add(langueAdd);
 
-                                //error
+                            }
+
+                            /*
+                            Intent SendHistorique = new Intent();
+                            SendHistorique.putExtra("addHistorique",texte.getText().toString());
+                            startActivity(SendHistorique);
+*/
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
                         }
                     }
 
@@ -56,13 +65,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         toast.show();
                     }
                 });
-                */
+
         Spinner spinner = findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.langue, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
+        //create array adapter and provide arrary list to it
+        ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,langue_list);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(arrayAdapter);
         Intent i = getIntent();
         String values = i.getStringExtra("textATraduire");
         EditText traduire = (EditText) findViewById(R.id.editTextTraduire);
@@ -109,12 +117,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             JSONObject texte_traduit = texte_translation.getJSONObject(0);
                             String test = texte_traduit.getString("text");
                             traduit.setText(test.toString());
-
                             /*
                             Intent SendHistorique = new Intent();
                             SendHistorique.putExtra("addHistorique",texte.getText().toString());
                             startActivity(SendHistorique);
 */
+
                         } catch (JSONException e) {
                             e.printStackTrace();
 

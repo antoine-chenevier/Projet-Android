@@ -3,7 +3,10 @@ package com.chenevier.projet;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,14 +22,21 @@ import org.json.JSONObject;
 import okhttp3.Response;
 
 public class ParametresActivity extends AppCompatActivity {
+String APIKey = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parametres);
         TextView character = (TextView)findViewById(R.id.textViewNbCaractere);
+        EditText TextKey = (EditText)findViewById(R.id.editTextCle);
+
+        SharedPreferences file = getSharedPreferences("fileKey",MODE_PRIVATE);
+        SharedPreferences.Editor editor = file.edit();
+        APIKey = file.getString("APIKey","");
+
         AndroidNetworking.get("https://api-free.deepl.com/v2/usage")
-                .addHeaders("Authorization","DeepL-Auth-Key "+"337206f1-6a79-5d3d-5eb2-ee1ba82d54f7:fx")
+                .addHeaders("Authorization","DeepL-Auth-Key "+ APIKey)
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
@@ -55,5 +65,46 @@ public class ParametresActivity extends AppCompatActivity {
                         toast.show();
                     }
                 });
+    }
+    public void SetKeyButton(View view){
+        TextView character = (TextView)findViewById(R.id.textViewNbCaractere);
+        EditText TextKey = (EditText)findViewById(R.id.editTextCle);
+        SharedPreferences file = getSharedPreferences("fileKey",MODE_PRIVATE);
+        SharedPreferences.Editor editor = file.edit();
+        editor.putString("APIKey",TextKey.getText().toString());
+        editor.commit();
+        APIKey = file.getString("APIKey","");
+
+        AndroidNetworking.get("https://api-free.deepl.com/v2/usage")
+                .addHeaders("Authorization","DeepL-Auth-Key "+ APIKey)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            int character_count = response.getInt("character_count");
+                            int character_limit = response.getInt("character_limit");
+                            float pourcentage =  (character_count/character_limit)*100;
+                            String test = character_count + "/" + character_limit + " Pourcentage: "+pourcentage;
+                            character.setText(test);
+
+                            /*
+                            Intent SendHistorique = new Intent();
+                            SendHistorique.putExtra("addHistorique",texte.getText().toString());
+                            startActivity(SendHistorique);
+*/
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Toast toast = Toast.makeText(ParametresActivity.this,anError.toString(),Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                });
+
     }
 }

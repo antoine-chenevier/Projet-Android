@@ -15,7 +15,6 @@
         android:ems="10"
         android:hint="Clé DeepL"
         android:inputType="textPersonName"
-        android:text="337206f1-6a79-5d3d-5eb2-ee1ba82d54f7:fx"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,5 +36,16 @@
         android:layout_marginTop="7dp"
         android:text="Paramètres"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/setKey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="251dp"
+        android:layout_marginEnd="30dp"
+        android:onClick="SetKeyButton"
+        android:text="set key"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

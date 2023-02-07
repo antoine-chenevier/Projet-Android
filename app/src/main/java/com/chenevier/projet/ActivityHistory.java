@@ -3,6 +3,7 @@ package com.chenevier.projet;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,21 +25,13 @@ public class ActivityHistory extends AppCompatActivity implements AdapterView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         listHistory = findViewById(R.id.listHistique);
-        Intent i = getIntent();
-        String values = i.getStringExtra("addHistorique");
-
-        historique.add(0,values);
-        /*
-        if(!values.isEmpty()){
-            historique = new String[]{values,"trois","quatre","bonjour"};
+        SharedPreferences fileH = getSharedPreferences("fileHistory",MODE_PRIVATE);
+        SharedPreferences.Editor editorH = fileH.edit();
+        for(int i=0;i<10;i++){
+            String value = fileH.getString("historique"+ i,"");
+            historique.add(value);
         }
-        //historique[0] = "values.toString()";
 
-        historique[0] = values;
-        historique[1] = "trois";
-        int taille = historique.length;
-        historique[taille + 1] = values;
-         */
         ArrayAdapter<String> month = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,historique);
         listHistory.setAdapter(month);
         listHistory.setOnItemClickListener(this);

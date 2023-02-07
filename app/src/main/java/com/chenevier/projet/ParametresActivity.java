@@ -28,13 +28,17 @@ String APIKey = "";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parametres);
+
+        // Set the objets
         TextView character = (TextView)findViewById(R.id.textViewNbCaractere);
         EditText TextKey = (EditText)findViewById(R.id.editTextCle);
 
+        // Set the API key
         SharedPreferences file = getSharedPreferences("fileKey",MODE_PRIVATE);
         SharedPreferences.Editor editor = file.edit();
         APIKey = file.getString("APIKey","");
 
+        // Get the usage of the API
         AndroidNetworking.get("https://api-free.deepl.com/v2/usage")
                 .addHeaders("Authorization","DeepL-Auth-Key "+ APIKey)
                 .build()
@@ -67,14 +71,19 @@ String APIKey = "";
                 });
     }
     public void SetKeyButton(View view){
+
+        // Set objets
         TextView character = (TextView)findViewById(R.id.textViewNbCaractere);
         EditText TextKey = (EditText)findViewById(R.id.editTextCle);
+
+        // Set API Key
         SharedPreferences file = getSharedPreferences("fileKey",MODE_PRIVATE);
         SharedPreferences.Editor editor = file.edit();
         editor.putString("APIKey",TextKey.getText().toString());
         editor.commit();
         APIKey = file.getString("APIKey","");
 
+        // Get the usage of the API
         AndroidNetworking.get("https://api-free.deepl.com/v2/usage")
                 .addHeaders("Authorization","DeepL-Auth-Key "+ APIKey)
                 .build()
@@ -84,18 +93,12 @@ String APIKey = "";
                         try {
                             int character_count = response.getInt("character_count");
                             int character_limit = response.getInt("character_limit");
-                            float pourcentage =  (character_count/character_limit)*100;
-                            String test = character_count + "/" + character_limit + " Pourcentage: "+pourcentage;
+
+                            String test = character_count + "/" + character_limit;
                             character.setText(test);
 
-                            /*
-                            Intent SendHistorique = new Intent();
-                            SendHistorique.putExtra("addHistorique",texte.getText().toString());
-                            startActivity(SendHistorique);
-*/
                         } catch (JSONException e) {
                             e.printStackTrace();
-
                         }
                     }
 
@@ -105,6 +108,5 @@ String APIKey = "";
                         toast.show();
                     }
                 });
-
     }
 }

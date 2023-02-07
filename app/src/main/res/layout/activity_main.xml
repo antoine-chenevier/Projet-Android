@@ -86,4 +86,16 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />
 
+    <EditText
+        android:id="@+id/editLanguage"
+        android:layout_width="165dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="193dp"
+        android:layout_marginTop="339dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="FR"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

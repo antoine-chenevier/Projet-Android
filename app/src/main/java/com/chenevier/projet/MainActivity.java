@@ -24,7 +24,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     String APIKey = "";
     ArrayList<Langue> langue_list = new ArrayList<>();
     ArrayAdapter<Langue> arrayAdapter ;
@@ -37,10 +37,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         AndroidNetworking.initialize(this);
 
+
+        // Set the api key
         SharedPreferences file = getSharedPreferences("fileKey",MODE_PRIVATE);
         SharedPreferences.Editor editor = file.edit();
         APIKey = file.getString("APIKey","");
 
+        // Get the list of languages
         AndroidNetworking.get("https://api-free.deepl.com/v2/languages")
                 .addHeaders("Authorization", "DeepL-Auth-Key " + APIKey)
                 .build()
@@ -54,38 +57,26 @@ public class MainActivity extends AppCompatActivity {
                                 String name = langue.getString("name");
                                 Langue langueAdd = new Langue(language, name);
                                 langue_list.add(langueAdd);
-
-
                             }
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
-
                     @Override
                     public void onError(ANError anError) {
                         Toast toast = Toast.makeText(MainActivity.this, anError.toString(), Toast.LENGTH_LONG);
                         toast.show();
                     }
                 });
+
+        // Set the spinner with the list of languages
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, langue_list);
         Spinner spinner = findViewById(R.id.spinner);
-        //create array adapter and provide arrary list to it
+        spinner.setOnItemSelectedListener(this);
 
         arrayAdapter.notifyDataSetChanged();
         spinner.setAdapter(arrayAdapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                spinner.setSelection(position);
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 /*
         Intent i = getIntent();
         String values = i.getStringExtra("textATraduire");
@@ -99,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Historique(View view) {
+        // Load the history view
         Intent nextActivity = new Intent(
                 MainActivity.this,
                 ActivityHistory.class
@@ -108,17 +100,22 @@ public class MainActivity extends AppCompatActivity {
 
     public  void Traduire(View view){
 
-
-
+        // Set the api key
         SharedPreferences file = getSharedPreferences("fileKey",MODE_PRIVATE);
         SharedPreferences.Editor editor = file.edit();
         APIKey = file.getString("APIKey","");
 
+        // Initialise objets
         EditText texte = (EditText) findViewById(R.id.editTextTraduire);
         TextView traduit = (TextView) findViewById(R.id.textViewTraduction);
         Spinner spinner = (Spinner)findViewById(R.id.spinner);
+        EditText textLanguage = (EditText) findViewById(R.id.editLanguage);
+        langue_selected = textLanguage.getText().toString();
+
         //Langue langueL = (Langue) spinner.getSelectedItem();
         //langue_selected = langueL.language;
+
+        // Send the text to translate
         AndroidNetworking.post("https://api-free.deepl.com/v2/translate")
                 .addHeaders("Authorization","DeepL-Auth-Key "+APIKey)
                 .addBodyParameter("text",texte.getText().toString())
@@ -139,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
 
                         }
                     }
-
                     @Override
                     public void onError(ANError anError) {
                         Toast toast = Toast.makeText(MainActivity.this,anError.toString(),Toast.LENGTH_LONG);
@@ -147,25 +143,39 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-
+            // Save the last 10 text translated
             SharedPreferences fileH = getSharedPreferences("fileHistory",MODE_PRIVATE);
             SharedPreferences.Editor editorH = fileH.edit();
             editorH.putString("historique"+ i,texte.getText().toString());
             editorH.commit();
             i++;
-            if(i>10){
-                i=0;
-            }
+            if(i>10){   i=0;    }
 
 
 
     }
 
     public void Parametres(View view) {
+        // Start the parameter View
         Intent nextActivity = new Intent(
                 MainActivity.this,
                 ParametresActivity.class
         );
         startActivity(nextActivity);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // On selecting a spinner item
+        String item = parent.getItemAtPosition(position).toString();
+
+        // Showing selected spinner item
+        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
+    }
+
+    public void onNothingSelected(AdapterView<?> arg0) {
+        // TODO Auto-generated method stub
+
     }
 }

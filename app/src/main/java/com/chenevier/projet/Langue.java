@@ -32,7 +32,7 @@ public class Langue {
         int secondLetter = Character.codePointAt(countryCode, 1) - 0x41 + 0x1F1E6;
         String flag =  new String(Character.toChars(firstLetter)) + new String(Character.toChars(secondLetter));
 
-        return  flag+ " " + this.name;
+        return  flag+ " " + language;
     }
 
 

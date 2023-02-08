@@ -48,21 +48,14 @@ String APIKey = "";
                         try {
                             int character_count = response.getInt("character_count");
                             int character_limit = response.getInt("character_limit");
-                            float pourcentage =  (character_count/character_limit)*100;
-                            String test = character_count + "/" + character_limit + " Pourcentage: "+pourcentage;
+                            String test = character_count + "/" + character_limit;
                             character.setText(test);
 
-                            /*
-                            Intent SendHistorique = new Intent();
-                            SendHistorique.putExtra("addHistorique",texte.getText().toString());
-                            startActivity(SendHistorique);
-*/
                         } catch (JSONException e) {
                             e.printStackTrace();
 
                         }
                     }
-
                     @Override
                     public void onError(ANError anError) {
                         Toast toast = Toast.makeText(ParametresActivity.this,anError.toString(),Toast.LENGTH_LONG);
@@ -101,7 +94,6 @@ String APIKey = "";
                             e.printStackTrace();
                         }
                     }
-
                     @Override
                     public void onError(ANError anError) {
                         Toast toast = Toast.makeText(ParametresActivity.this,anError.toString(),Toast.LENGTH_LONG);

@@ -20,5 +20,12 @@
     <ListView
         android:id="@+id/listHistique"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="547dp" />
+
+    <Button
+        android:id="@+id/cleanbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="cleanHistory"
+        android:text="Nettoyer l'historique" />
 </LinearLayout>

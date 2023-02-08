@@ -20,11 +20,11 @@
 
     <TextView
         android:id="@+id/textViewNbCaractere"
-        android:layout_width="238dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="41dp"
-        android:layout_marginTop="239dp"
-        android:text="5000/5000"
+        android:layout_width="109dp"
+        android:layout_height="73dp"
+        android:layout_marginStart="148dp"
+        android:layout_marginTop="260dp"
+        android:text="0/5000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,10 +40,10 @@
 
     <Button
         android:id="@+id/setKey"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="251dp"
-        android:layout_marginEnd="30dp"
+        android:layout_width="345dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="180dp"
+        android:layout_marginEnd="28dp"
         android:onClick="SetKeyButton"
         android:text="set key"
         app:layout_constraintEnd_toEndOf="parent"

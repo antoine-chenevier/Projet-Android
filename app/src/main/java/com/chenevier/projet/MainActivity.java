@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     String APIKey = "";
     ArrayList<Langue> langue_list = new ArrayList<>();
-    ArrayAdapter<Langue> arrayAdapter ;
+    ArrayAdapter<Langue> arrayAdapter;
     String langue_selected = "FR";
     int i=0;
     @Override
